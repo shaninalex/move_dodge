@@ -3,7 +3,7 @@ signal hit
 
 export var speed = 400 # How fast the player will move (pixels/sec).
 var screen_size # Size of the game window.
-
+onready var barrel: Line2D = $Barrel
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -41,11 +41,14 @@ func _process(delta):
 		$AnimatedSprite.animation = "up"
 		$AnimatedSprite.flip_v = velocity.y > 0
 
+#	print($Barrel.point.to_global($Barrel.point.position))
+
 
 func _on_Player_body_entered(body):
-	hide()
-	emit_signal("hit")
-	$CollisionShape2D.set_deferred("disabled", true)
+	if "mobs" in body.get_groups():
+		hide()
+		emit_signal("hit")
+		$CollisionShape2D.set_deferred("disabled", true)
 
 
 func start(pos: Vector2):
